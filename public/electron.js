@@ -12,7 +12,9 @@ function createWindow () {
         webPreferences: {
             contextIsolation: false,
             preload: path.join(__dirname, 'preload.js')
-        }
+        },
+        autoHideMenuBar: true,
+        icon: path.join(__dirname, 'public/ico.png')
     });
 
     // URLの読み込み
