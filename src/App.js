@@ -22,31 +22,33 @@ function App() {
   const theme = createTheme(ColorTheme());
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <div className='bg-cover bg-center min-h-screen' style={{ backgroundImage: `url(${bgp})` }}>
-          <div className="flex flex-col items-center jusify-center h-full">
-            <ThemeProvider theme={theme}>
-            <header className=' flex flex-row items-center justify-center mt-1'>
-              <Button variant='contained' color={showTextButton ? 'ochre' : 'secondary'} onClick={handleTextButtonClick}>
-                <Typography variant="h6" color="primary">
-                  テキストの翻訳
-                </Typography>
-              </Button>
-              <Button variant='contained' color={showFileButton ? 'ochre' : 'secondary'} onClick={handleFileButtonClick}>
-                <Typography variant="h6" color="primary">
-                  文書ファイルの翻訳
-                </Typography>
-              </Button>
-            </header>
-            <div className='flex flex-row items-center justify-center h-full'>
-              {showTextButton ? <InputComponent /> : <FileUploadUI />}
-              {/* OutputComponentを下半分いっぱいに表示するためのスペース */}
-              <OutputComponent />
-            </div>
-            </ThemeProvider>
-          </div>
+        <div className=' flex flex-row justify-center p-5'>
+          <Button variant='contained' className='p-5' color={showTextButton ? 'ochre' : 'secondary'} onClick={handleTextButtonClick}>
+            <Typography variant="h6" color="primary">
+              テキストの翻訳
+            </Typography>
+          </Button>
+          <Button variant='contained' color={showFileButton ? 'ochre' : 'secondary'} onClick={handleFileButtonClick}>
+            <Typography variant="h6" color="primary">
+              文書ファイルの翻訳
+            </Typography>
+          </Button>
+        </div>
+        {showTextButton ? 
+        <div className='flex flex-row'>
+          <InputComponent />
+          <OutputComponent />
+        </div> :null}
+        {showFileButton ?
+        <div className='flex flex-col'>
+          <FileUploadUI />
+          <OutputComponent />
+        </div> :null}
+
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 
