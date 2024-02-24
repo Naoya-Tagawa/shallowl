@@ -38,9 +38,9 @@ function App() {
                 </Typography>
               </Button>
             </header>
-            <div className='flex flex-col items-center justify-center h-full'>
+            <div className='flex flex-row items-center justify-center h-full'>
               {showTextButton ? <InputComponent /> : <FileUploadUI />}
-              <div className="flex-grow"></div> {/* OutputComponentを下半分いっぱいに表示するためのスペース */}
+              {/* OutputComponentを下半分いっぱいに表示するためのスペース */}
               <OutputComponent />
             </div>
             </ThemeProvider>
