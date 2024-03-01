@@ -1,7 +1,7 @@
 const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-const { getText } = require('./api');
+// const { getText } = require('./api');
 
 let mainWindow;
 
@@ -40,8 +40,8 @@ app.whenReady().then(() => {
             mainWindow.focus();
         }
     });
-
     // Ctrl+Cが二回押されたときの処理
+// Ctrl+Cが二回押されたときの処理
     let lastCopyTime = 0;
     globalShortcut.register('Ctrl+C', () => {
         const currentTime = new Date().getTime();
@@ -49,9 +49,7 @@ app.whenReady().then(() => {
         if (currentTime - lastCopyTime <= 500) {
             const clipboard = require('electron').clipboard;
             const copiedText = clipboard.readText();
-            // getHello関数を実行し、コピーしたテキストを引数として渡す
-            ipcMain.handle('getText', (event, text) => getText(text));
-            ipcMain.handle('getText', (event, text) => getText(copiedText));
+            mainWindow.webContents.send('copiedText', copiedText); // テキストをレンダラープロセスに送信
             lastCopyTime = 0; // 最後のCtrl+Cの時間をリセット
         } else {
             lastCopyTime = currentTime; // 最後のCtrl+Cの時間を更新

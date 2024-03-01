@@ -1,3 +1,3 @@
-export const getText = async (name) => {
-    return `Hello ${name}!`;
+export const getText = async (text) => {
+    return `Hello ${text}!`;
     }

@@ -11,11 +11,11 @@ import FileUploadUI from './FileUploadUI';
 function App() {
   const [showTextButton, setShowTextButton] = useState(true);
   const [showFileButton, setShowFileButton] = useState(false);
-  const [Text, setInputText] = useState('');
+  const [inputText, setInputText] = useState('');
   const handleTextButtonClick = () => {
     setShowTextButton(true);
     setShowFileButton(false);
-    // window.api.getText().then(text => {setInputText(text);});
+
   }
   const handleFileButtonClick = () => {
     setShowTextButton(false);
@@ -23,6 +23,23 @@ function App() {
     //setInputText('Hello, World!');
   }
   const theme = createTheme(ColorTheme());
+  useEffect(() => {
+    // ページが読み込まれた後にpreloadスクリプトがロードされるのを待つ
+    window.addEventListener('DOMContentLoaded', () => {
+      window.api.getText().then(text => {
+        if (text) {
+          setInputText(text);
+        }
+      });
+    });
+  }, []);
+  // useEffect(() => {
+  //   window.api.getText().then(text => {
+  //       if (text) {
+  //           setInputText(text);
+  //       }
+  //   });
+  // }, []);
 
   // useEffect(() => {
   //   // IPC通信を使ってテキストを取得する
@@ -59,6 +76,9 @@ function App() {
           <FileUploadUI />
           <OutputComponent />
         </div> :null}
+        <div>
+          {inputText}
+        </div>
 
       </div>
     </ThemeProvider>
