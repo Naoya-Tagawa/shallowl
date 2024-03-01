@@ -11,15 +11,28 @@ import FileUploadUI from './FileUploadUI';
 function App() {
   const [showTextButton, setShowTextButton] = useState(true);
   const [showFileButton, setShowFileButton] = useState(false);
+  const [Text, setInputText] = useState('');
   const handleTextButtonClick = () => {
     setShowTextButton(true);
     setShowFileButton(false);
+    // window.api.getText().then(text => {setInputText(text);});
   }
   const handleFileButtonClick = () => {
     setShowTextButton(false);
     setShowFileButton(true);
+    //setInputText('Hello, World!');
   }
   const theme = createTheme(ColorTheme());
+
+  // useEffect(() => {
+  //   // IPC通信を使ってテキストを取得する
+  //   window.api.getText().then(text => {
+  //     setInputText(text);
+  //   });
+  // }, []); // 空の依存配列を指定することで、マウント時のみ実行される
+
+  
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -38,7 +51,7 @@ function App() {
         </div>
         {showTextButton ? 
         <div className='flex flex-row'>
-          <InputComponent />
+          <InputComponent inputText={Text}/>
           <OutputComponent />
         </div> :null}
         {showFileButton ?

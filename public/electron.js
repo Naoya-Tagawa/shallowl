@@ -1,6 +1,7 @@
-const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron'); // ipcMain を追加
+const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
+const { getText } = require('./api');
 
 let mainWindow;
 
@@ -40,13 +41,22 @@ app.whenReady().then(() => {
         }
     });
 
-    globalShortcut.register('Alt+CommandOrControl+C', () => {
-        if (mainWindow) {
-            const text = '取得したテキスト'; // テキストの取得方法は実装に依存
-            mainWindow.webContents.send('text-updated', text);
+    // Ctrl+Cが二回押されたときの処理
+    let lastCopyTime = 0;
+    globalShortcut.register('Ctrl+C', () => {
+        const currentTime = new Date().getTime();
+        // 直前のCtrl+Cから500ms以内にもう一度Ctrl+Cが押された場合
+        if (currentTime - lastCopyTime <= 500) {
+            const clipboard = require('electron').clipboard;
+            const copiedText = clipboard.readText();
+            // getHello関数を実行し、コピーしたテキストを引数として渡す
+            ipcMain.handle('getText', (event, text) => getText(text));
+            ipcMain.handle('getText', (event, text) => getText(copiedText));
+            lastCopyTime = 0; // 最後のCtrl+Cの時間をリセット
+        } else {
+            lastCopyTime = currentTime; // 最後のCtrl+Cの時間を更新
         }
     });
-
 });
 
 app.on('window-all-closed', function () {
@@ -58,8 +68,3 @@ app.on('activate', function () {
 });
 
 app.whenReady().then(createWindow);
-
-// テキストを取得してコンソールに表示する処理を追加
-ipcMain.on('text-updated', (event, text) => {
-    console.log('取得したテキスト:', text);
-});
