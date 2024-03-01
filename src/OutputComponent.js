@@ -4,7 +4,7 @@ function OutputComponent() {
   const isMediumScreen = useMediaQuery('(min-height: 600px)');
   const isLargeScreen = useMediaQuery('(min-height: 900px)');
 
-  let rows = 5; // デフォルトの行数
+  let rows = 14; // デフォルトの行数
 
   if (isMediumScreen) {
     rows = 18; // 600px以上の場合の行数

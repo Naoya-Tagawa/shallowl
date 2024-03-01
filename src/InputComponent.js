@@ -1,10 +1,10 @@
 import { useMediaQuery, TextField } from '@mui/material';
 
-function OutputComponent() {
+function InputComponent(props) {
   const isMediumScreen = useMediaQuery('(min-height: 600px)');
   const isLargeScreen = useMediaQuery('(min-height: 900px)');
 
-  let rows = 5; // デフォルトの行数
+  let rows = 14; // デフォルトの行数
 
   if (isMediumScreen) {
     rows = 18; // 600px以上の場合の行数
@@ -25,9 +25,10 @@ function OutputComponent() {
         InputLabelProps={{ style: { fontSize: 20 } }}
         fullWidth
         focused
+        value={props.inputText}
       />
     </div>
   );
 }
 
-export default OutputComponent;
+export default InputComponent;
