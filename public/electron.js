@@ -11,7 +11,8 @@ function createWindow() {
         height: 600,
         webPreferences: {
             contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js')
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'public/preload.js')
         },
         autoHideMenuBar: true,
         icon: path.join(__dirname, 'public/ico.png')
@@ -42,19 +43,14 @@ app.whenReady().then(() => {
     });
     // Ctrl+Cが二回押されたときの処理
 // Ctrl+Cが二回押されたときの処理
-    let lastCopyTime = 0;
-    globalShortcut.register('Ctrl+C', () => {
-        const currentTime = new Date().getTime();
-        // 直前のCtrl+Cから500ms以内にもう一度Ctrl+Cが押された場合
-        if (currentTime - lastCopyTime <= 500) {
-            const clipboard = require('electron').clipboard;
-            const copiedText = clipboard.readText();
-            mainWindow.webContents.send('copiedText', copiedText); // テキストをレンダラープロセスに送信
-            lastCopyTime = 0; // 最後のCtrl+Cの時間をリセット
-        } else {
-            lastCopyTime = currentTime; // 最後のCtrl+Cの時間を更新
-        }
+    globalShortcut.register('Ctrl+K', () => {
+        const clipboard = require('electron').clipboard;
+        const copiedText = clipboard.readText();
+        console.log(copiedText);
+        mainWindow.webContents.send('copiedText', copiedText); // テキストをレンダラープロセスに送信
+         
     });
+
 });
 
 app.on('window-all-closed', function () {

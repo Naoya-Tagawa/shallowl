@@ -7,6 +7,7 @@ import { ColorTheme } from './Colortheme';
 import InputComponent from './InputComponent';
 import OutputComponent from './OutputComponent';
 import FileUploadUI from './FileUploadUI';
+const {api} = window;
 
 function App() {
   const [showTextButton, setShowTextButton] = useState(true);
@@ -15,40 +16,21 @@ function App() {
   const handleTextButtonClick = () => {
     setShowTextButton(true);
     setShowFileButton(false);
+    window.api.getcopiedText((copiedText) => {
+      setInputText(copiedText);
+    });
 
   }
   const handleFileButtonClick = () => {
     setShowTextButton(false);
     setShowFileButton(true);
+    console.log(api);
     //setInputText('Hello, World!');
   }
   const theme = createTheme(ColorTheme());
-  useEffect(() => {
-    // ページが読み込まれた後にpreloadスクリプトがロードされるのを待つ
-    window.addEventListener('DOMContentLoaded', () => {
-      window.api.getText().then(text => {
-        if (text) {
-          setInputText(text);
-        }
-      });
-    });
-  }, []);
-  // useEffect(() => {
-  //   window.api.getText().then(text => {
-  //       if (text) {
-  //           setInputText(text);
-  //       }
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   // IPC通信を使ってテキストを取得する
-  //   window.api.getText().then(text => {
-  //     setInputText(text);
-  //   });
-  // }, []); // 空の依存配列を指定することで、マウント時のみ実行される
-
   
+
+  // window.api の確認用の useEffect を追加する
 
 
   return (
